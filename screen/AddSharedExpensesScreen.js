@@ -32,7 +32,7 @@ function AddSharedExpenseScreen({ navigation, route }) {
   }
 
   function addSharedExpense() {
-    sharedExpensesContext.addSharedExpense(eid, expenseName, cost);
+    sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
     console.log("EID: " + eid);
     console.log("Expense name: " + expenseName);
     console.log("Cost: " + cost);

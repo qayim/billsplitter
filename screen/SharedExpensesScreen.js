@@ -66,7 +66,7 @@ function SharedExpensesScreen({ navigation }) {
           ) : (
             <ExpensesCard
               expenseName={itemData.item.expenseName}
-              cost={itemData.item.cost}
+              cost={(itemData.item.cost).toFixed(2)}
               eid={itemData.item.eid}
               onDelete={onDeleteSharedExpenseHandler}
               onLongPress={onEditSharedExpenseHandler}
