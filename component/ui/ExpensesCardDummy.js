@@ -2,7 +2,7 @@ import { Text, StyleSheet, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/colors";
 
-function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
+function ExpensesCardDummy({ expenseName, cost }) {
   let expenseFontSize = 18;
   if (cost > 99 && cost < 1000) {
     expenseFontSize = 18;
@@ -14,11 +14,11 @@ function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
     expenseFontSize = 12;
   }
   return (
-    <Pressable onLongPress={onLongPress.bind(this, eid)}>
-      <View style={styles.container} key={eid}>
+    <Pressable >
+      <View style={styles.container}>
         <View style={styles.contentContainer}>
           <View style={styles.expenseContainer}>
-            <Text style={styles.expenseText}> {expenseName} </Text>
+            <Text style={styles.expenseText}>{expenseName}</Text>
           </View>
           <View style={styles.costContainer}>
             <Text style={[styles.costText, { fontSize: expenseFontSize }]}>
@@ -26,7 +26,7 @@ function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
             </Text>
           </View>
           <View style={styles.iconContainer}>
-            <Pressable onPress={onDelete.bind(this, eid)}>
+            <Pressable>
               <AntDesign name="delete" size={30} color={Colors.fontColorDark} />
             </Pressable>
           </View>
@@ -36,7 +36,7 @@ function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
   );
 }
 
-export default ExpensesCard;
+export default ExpensesCardDummy;
 
 const styles = StyleSheet.create({
   container: {

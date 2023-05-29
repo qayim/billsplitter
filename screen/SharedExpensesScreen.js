@@ -49,12 +49,28 @@ function SharedExpensesScreen({ navigation }) {
       });
     }
 
+    function resetAll() {
+      sharedExpensesContext.reset();
+    }
+
+    useEffect(() => {
+      if (sharedExpensesContext.users.length <= 0) {
+        navigation.navigate("Main");
+      }
+    }, [resetAll]);
+
+    function infoHandler() {
+      navigation.navigate("Info");
+    }
+
   return (
     <View style={styles.container}>
       <TitleCardIcon
         title={"Shared Expenses"}
         icon={"cash-plus"}
         page={() => navigation.navigate("AddSharedExpenses")}
+        info={infoHandler}
+        onLongPress={resetAll}
       />
       <SharedExpensesCard sharedExpensesTotal={totalCost} />
       <FlatList
@@ -66,7 +82,7 @@ function SharedExpensesScreen({ navigation }) {
           ) : (
             <ExpensesCard
               expenseName={itemData.item.expenseName}
-              cost={(itemData.item.cost).toFixed(2)}
+              cost={itemData.item.cost.toFixed(2)}
               eid={itemData.item.eid}
               onDelete={onDeleteSharedExpenseHandler}
               onLongPress={onEditSharedExpenseHandler}
@@ -83,6 +99,5 @@ export default SharedExpensesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
   },
 });

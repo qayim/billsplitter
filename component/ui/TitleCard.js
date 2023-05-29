@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View, Pressable } from "react-native";
 import Button from "./Button";
+import Colors from "../../constants/colors";
 
 function TitleCard({children}) {
     return (
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
-    color: "#EDEEC0",
+    color: Colors.fontColorLight,
     textAlign: "center",
   },
 });

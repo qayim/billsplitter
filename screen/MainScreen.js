@@ -43,7 +43,7 @@ function MainScreen({ navigation }) {
       return userTotalExpense;
     } else {
       userTotalExpense = userExpenses.reduce((acc, cur) => acc + +cur.cost, 0);
-      console.log("User total cost: " + uid + userTotalExpense);
+      console.log("UID: " + uid + "; Total Expense: " + userTotalExpense);
       return userTotalExpense;
     }
   }
@@ -71,6 +71,11 @@ function MainScreen({ navigation }) {
     );
   }
 
+  function onCheckUserHandler(uid) {
+    console.log("Check uid: " + uid);
+    userContext.checkUser(uid);
+  }
+
   function onEditUserHandler(uid) {
     console.log("Edit uid: " + uid);
     navigation.navigate("EditUser", { editUserId: uid });
@@ -81,9 +86,27 @@ function MainScreen({ navigation }) {
     navigation.navigate("SharedExpenses");
   }
 
+  function resetAll() {
+    userContext.reset();
+    if(users.length<=0){
+      navigation.navigate("Main");
+    }
+  }
+
+  useEffect(() => {
+    if (users.length <= 0) {
+      navigation.navigate("Main");
+    }
+  }, [resetAll]);
+
+  function infoHandler(){
+    navigation.navigate("Info");
+  }
+  
+
   return (
     <View style={styles.container}>
-      <TitleCardIcon title={"FairSplit"} icon={"adduser"} page={addUser} />
+      <TitleCardIcon title={"FairSplit"} icon={"adduser"} page={addUser} info={infoHandler} onLongPress={resetAll}/>
       <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
       <Pressable onPress={onSharedExpenses}>
         <SharedExpensesCard sharedExpensesTotal={totalSharedExpense} />
@@ -98,7 +121,9 @@ function MainScreen({ navigation }) {
               total={
                 (userTotal(itemData.item.uid) + totalSharedExpense / users.length).toFixed(2)
               }
+              check={itemData.item.check}
               onDelete={onDeleteUserHandler}
+              onCheck={onCheckUserHandler}
               page={() =>
                 navigation.navigate("UserExpenses", {
                   userID: itemData.item.uid,
@@ -118,6 +143,5 @@ export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
   },
 });

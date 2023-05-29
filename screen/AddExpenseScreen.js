@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Text, StyleSheet, View, Pressable, Alert } from "react-native";
 import { useState, useContext } from "react";
 import { BillsContext } from "../context/bill-context";
 import InputCard from "../component/ui/InputCard";
@@ -6,7 +6,7 @@ import InputButton from "../component/ui/InputButton";
 import { Ionicons } from "@expo/vector-icons";
 import TitleCard from "../component/ui/TitleCard";
 
-function AddExpenseScreen({navigation, route}) {
+function AddExpenseScreen({ navigation, route }) {
   const [expenseName, setExpenseName] = useState("");
   const [cost, setCost] = useState(0);
   const expensesContext = useContext(BillsContext);
@@ -34,13 +34,66 @@ function AddExpenseScreen({navigation, route}) {
   }
 
   function addExpense() {
-    expensesContext.addExpense(uid, eid, expenseName, +cost);
-    console.log("UID: " + uid);
-    console.log("EID: " + eid);
-    console.log("Expense name: " + expenseName);
-    console.log("Cost: " + cost);
-    console.log("Expenses: ", expensesContext.expenses);
-    navigation.navigate("UserExpenses", {userID: uid, userName: name});
+    if (uid.length <= 0 || isNaN(uid) || uid === null) {
+      console.log("UID Empty: " + uid);
+      Alert.alert(
+        "UID not found",
+        "User ID is empty please go back to the main screen and start again.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("Main"),
+          },
+        ]
+      );
+    } else if (eid.length <= 0 || isNaN(eid) || eid === null) {
+      console.log("Eid empty: " + eid);
+      Alert.alert(
+        "EID not found",
+        "Expense ID is empty please go back to the main screen and start again.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("Main"),
+          },
+        ]
+      );
+    } else if (expenseName.length <= 0) {
+      console.log("Expense name empty: " + expenseName);
+      Alert.alert(
+        "Expense name empty",
+        "Expense name is empty please fill up the expense name.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => console.log("Ok pressed"),
+          },
+        ]
+      );
+    } else {
+      expensesContext.addExpense(uid, eid, expenseName, +cost);
+      console.log("UID: " + uid);
+      console.log("EID: " + eid);
+      console.log("Expense name: " + expenseName);
+      console.log("Cost: " + cost);
+      console.log("Expenses: ", expensesContext.expenses);
+      navigation.navigate("UserExpenses", { userID: uid, userName: name });
+    }
   }
 
   return (
@@ -74,7 +127,6 @@ export default AddExpenseScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
     alignItems: "center",
   },
   inputContainer: {
@@ -83,7 +135,8 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   buttonContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
+    justifyContent: 'flex-end',
   },
 });

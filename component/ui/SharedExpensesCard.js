@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React, { Component } from 'react';
+import { Text, StyleSheet, View } from 'react-native';
+import Colors from '../../constants/colors';
 
 function SharedExpensesCard({sharedExpensesTotal}) {
     return (
@@ -16,14 +17,14 @@ const styles = StyleSheet.create({
     margin: "2%",
     padding: "5%",
     borderWidth: 1,
-    borderColor: "#A7A284",
+    borderColor: Colors.boxBorderColor,
     borderRadius: 20,
     alignItems: "center",
   },
   totalText: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#A7A284",
+    color: Colors.boxBorderColor,
   },
 });
 

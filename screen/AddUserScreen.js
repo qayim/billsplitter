@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import {
-  Text,
+  Alert,
   StyleSheet,
   View,
   Pressable,
@@ -13,6 +13,7 @@ import { BillsContext } from "../context/bill-context";
 import InputButton from "../component/ui/InputButton";
 import TitleCard from "../component/ui/TitleCard";
 import InputCard from "../component/ui/InputCard";
+import Colors from "../constants/colors";
 
 function AddUserScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -21,24 +22,56 @@ function AddUserScreen({ navigation }) {
 
   const uid = Math.trunc(
     users.length +
-      ((Math.floor(Math.random() * 100) +
-        1) +
+      (Math.floor(Math.random() * 100) +
+        1 +
         (Math.floor(Math.random() * 100) + 1) *
           (Math.floor(Math.random() * 100) + 1)) /
         (Math.floor(Math.random() * 100) + 1)
   );
 
-  function nameInputHandler(enteredName){
-    console.log("Name: "+ enteredName);
+  function nameInputHandler(enteredName) {
+    console.log("Name: " + enteredName);
     setName(enteredName);
   }
 
   function addUser() {
-    usersContext.addUser(uid, name);
-    console.log("ID: "+ uid);
-    console.log("Name: " + name);
-    console.log("Users: ", usersContext.users);
-    navigation.navigate("Main");
+    if (uid.length <= 0 || isNaN(uid) || uid === null) {
+      console.log("UID Empty: " + uid);
+      Alert.alert(
+        "UID not found",
+        "User ID is empty please go back to the main screen and start again.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("Main"),
+          },
+        ]
+      );
+    } else if (name.length <= 0 || name === null) {
+      console.log("Name empty: " + name);
+      Alert.alert("Name is empty", "Name is empty please enter a name.", [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Ok",
+          onPress: () => console.log("Ok pressed"),
+        },
+      ]);
+    } else {
+      usersContext.addUser(uid, name);
+      console.log("ID: " + uid);
+      console.log("Name: " + name);
+      console.log("Users: ", usersContext.users);
+      navigation.navigate("Main");
+    }
   }
 
   return (
@@ -46,12 +79,16 @@ function AddUserScreen({ navigation }) {
       <View style={styles.container}>
         <TitleCard>Add User</TitleCard>
         <View style={styles.inputContainer}>
-          <InputCard placeholder={"Name"} handler={nameInputHandler} keyboardType="default"/>
+          <InputCard
+            placeholder={"Name"}
+            handler={nameInputHandler}
+            keyboardType="default"
+          />
         </View>
         <View style={styles.buttonContainer}>
           <Pressable onPress={addUser}>
             <InputButton>
-              <Ionicons name="add-circle-outline" size={50} color="#433E0E" />
+              <Ionicons name="add-circle-outline" size={50} color={Colors.fontColorDark} />
             </InputButton>
           </Pressable>
         </View>
@@ -65,7 +102,6 @@ export default AddUserScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
     alignContent: "center",
     alignItems: "center",
   },
@@ -75,8 +111,9 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   buttonContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
+    justifyContent: "flex-end",
   },
 });
 

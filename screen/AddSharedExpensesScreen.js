@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Alert, StyleSheet, View, Pressable } from "react-native";
 import { useState, useContext } from "react";
 import { BillsContext } from "../context/bill-context";
 import InputCard from "../component/ui/InputCard";
@@ -32,12 +32,47 @@ function AddSharedExpenseScreen({ navigation, route }) {
   }
 
   function addSharedExpense() {
-    sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
-    console.log("EID: " + eid);
-    console.log("Expense name: " + expenseName);
-    console.log("Cost: " + cost);
-    console.log("Shared Expenses: ", sharedExpenses);
-    navigation.navigate("SharedExpenses");
+    if (eid.length <= 0 || isNaN(eid) || eid === null) {
+      console.log("Eid empty: " + eid);
+      Alert.alert(
+        "EID not found",
+        "Expense ID is empty please go back to the main screen and start again.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("Main"),
+          },
+        ]
+      );
+    } else if (expenseName.length <= 0) {
+      console.log("Expense name empty: " + expenseName);
+      Alert.alert(
+        "Expense name empty",
+        "Expense name is empty please fill up the expense name.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => console.log("Ok pressed"),
+          },
+        ]
+      );
+    } sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
+      console.log("EID: " + eid);
+      console.log("Expense name: " + expenseName);
+      console.log("Cost: " + cost);
+      console.log("Shared Expenses: ", sharedExpenses);
+      navigation.navigate("SharedExpenses");
+    }
   }
 
   return (
@@ -71,7 +106,6 @@ export default AddSharedExpenseScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
     alignItems: "center",
   },
   inputContainer: {
@@ -80,7 +114,8 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   buttonContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
+    justifyContent: "flex-end",
   },
 });

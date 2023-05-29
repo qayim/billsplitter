@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "billsplitter",
+    "name": "FairSplitter",
     "slug": "billsplitter",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,16 +15,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "fairsplit"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#EDEEC0"
+      },
+      "package": "com.billsplitter.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5aa931e1-bb0f-42dc-acaa-52305d5d4164"
+      }
     }
   }
 }

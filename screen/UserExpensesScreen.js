@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Text, StyleSheet, View, FlatList, Alert } from "react-native";
+import { StyleSheet, View, FlatList, Alert } from "react-native";
 import { BillsContext } from "../context/bill-context";
 import ExpensesCard from "../component/ui/ExpensesCard";
 import OverallTotalCard from "../component/ui/OverallTotalCard";
@@ -65,12 +65,28 @@ function UserExpensesScreen({ navigation, route }) {
     });
   }
 
+  function resetAll() {
+    expensesContext.reset();
+  }
+
+  useEffect(()=>{
+    if (expensesContext.users.length <= 0) {
+      navigation.navigate("Main");
+    }
+  }, [resetAll]);
+
+  function infoHandler() {
+    navigation.navigate("Info");
+  }
+
   return (
     <View style={styles.container}>
       <TitleCardIcon
         title={"User Expenses"}
         icon={"cash-plus"}
         page={addExpense}
+        info={infoHandler}
+        onLongPress={resetAll}
       />
       <TitleCard>{name}</TitleCard>
       <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
@@ -83,7 +99,7 @@ function UserExpensesScreen({ navigation, route }) {
           ) : (
             <ExpensesCard
               expenseName={itemData.item.expenseName}
-              cost={(itemData.item.cost).toFixed(2)}
+              cost={itemData.item.cost.toFixed(2)}
               eid={itemData.item.eid}
               onDelete={onDeleteExpenseHandler}
               onLongPress={onEditExpenseHandler}
@@ -100,6 +116,5 @@ export default UserExpensesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
   },
 });

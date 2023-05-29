@@ -4,16 +4,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Button from "./Button";
 import Colors from "../../constants/colors";
 
-function TitleCardIcon({ title, icon, page, info, onLongPress }, navigation) {
+function TitleCardIconDummy({ title, icon }, navigation) {
   return (
     <Button>
-      <Pressable onLongPress={onLongPress}>
+      <Pressable>
         <View style={styles.titleContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.titleText}>{title}</Text>
           </View>
           <View style={styles.iconButtonContainer}>
-            <Pressable onPress={info}>
+            <Pressable>
               <View style={styles.iconContainer}>
                 <AntDesign
                   name="info"
@@ -22,10 +22,14 @@ function TitleCardIcon({ title, icon, page, info, onLongPress }, navigation) {
                 />
               </View>
             </Pressable>
-            <Pressable onPress={page}>
+            <Pressable>
               <View style={styles.iconContainer}>
                 {icon === "adduser" ? (
-                  <AntDesign name={icon} size={40} color={Colors.fontColorLight} />
+                  <AntDesign
+                    name={icon}
+                    size={40}
+                    color={Colors.fontColorLight}
+                  />
                 ) : (
                   <MaterialCommunityIcons
                     name={icon}
@@ -42,13 +46,13 @@ function TitleCardIcon({ title, icon, page, info, onLongPress }, navigation) {
   );
 }
 
-export default TitleCardIcon;
+export default TitleCardIconDummy;
 
 const styles = StyleSheet.create({
   titleContainer: {
     flex: 1,
     flexDirection: "row",
-    width: '100%',
+    width: "100%",
     alignItems: "center",
   },
   textContainer: {

@@ -1,4 +1,5 @@
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View } from 'react-native';
+import Colors from '../../constants/colors';
 
 function OverallTotalCard({overallTotal}) {
     return (
@@ -14,14 +15,14 @@ const styles = StyleSheet.create({
   container: {
     margin: "2%",
     padding: '5%',
-    backgroundColor: "#A7A284",
+    backgroundColor: Colors.boxBorderColor,
     borderRadius: 20,
     alignItems: 'center',
   },
   totalText: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#EDEEC0",
+    color: Colors.fontColorTransparent,
   },
 });
 

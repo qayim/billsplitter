@@ -1,18 +1,21 @@
 import { createContext, useState } from "react";
+import {Alert} from 'react-native';
 
 export const BillsContext = createContext({
   users: [],
   expenses: [],
   sharedExpenses: [],
-  addUser: (uid, name) => {},
+  addUser: (uid, name, check) => {},
   deleteUser: (uid) => {},
   editUser: (uid, newName) => {},
+  checkUser: (uid) => {},
   addExpense: (uid, eid, expenseName, cost) => {},
   deleteExpense: (eid) => {},
   editExpense: (eid, newExpenseName, newCost) => {},
   addSharedExpenses: (eid, expenseName, cost) => {},
   deleteSharedExpense: (eid) => {},
   editSharedExpense: (eid, newExpenseName, newCost) => {},
+  reset: () => {},
 });
 
 function BillContextProvider({ children }) {
@@ -23,7 +26,7 @@ function BillContextProvider({ children }) {
     function addUser(uid, name, expense){
         setUsers((currentUsers)=> [
             ...currentUsers,
-            {uid: uid, name: name}
+            {uid: uid, name: name, check: false}
         ]);
     }
     function deleteUser(uid){
@@ -40,6 +43,19 @@ function BillContextProvider({ children }) {
                 return{
                     ...user,
                     name: newName,
+                };
+            }
+            return user;
+        });
+        setUsers(newUser);
+    }
+
+    function checkUser(uid){
+      const newUser = users.map((user)=> {
+            if(user.uid === uid){
+                return{
+                    ...user,
+                    check: !user.check,
                 };
             }
             return user;
@@ -100,6 +116,30 @@ function BillContextProvider({ children }) {
       });
       setSharedExpenses(newSharedExpense);
     }
+    
+    function reset(){
+      Alert.alert(
+        "Reset",
+        "Are you sure you want to reset and delete everything?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel reset"),
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              setSharedExpenses([]);
+              setExpenses([]);
+              setUsers([]);
+            },
+            style: "cancel",
+          },
+        ]
+      );
+      
+    }
 
     const value = {
       users: users,
@@ -108,12 +148,14 @@ function BillContextProvider({ children }) {
       addUser: addUser,
       deleteUser: deleteUser,
       editUser: editUser,
+      checkUser: checkUser,
       addExpense: addExpense,
       deleteExpense: deleteExpense,
       editExpense: editExpense,
       addSharedExpense: addSharedExpense,
       deleteSharedExpense: deleteSharedExpense,
       editSharedExpense: editSharedExpense,
+      reset: reset,
     };
 
     return(

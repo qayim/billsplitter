@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Alert, StyleSheet, View, Pressable } from "react-native";
 import TitleCard from "../component/ui/TitleCard";
 import InputCard from "../component/ui/InputCard";
 import InputButton from "../component/ui/InputButton";
 import { AntDesign } from "@expo/vector-icons";
 import { BillsContext } from "../context/bill-context";
+import Colors from "../constants/colors";
 
 function EditSharedExpensesScreen({ navigation, route }) {
   const editEid = route.params.editExpenseId;
@@ -35,12 +36,48 @@ function EditSharedExpensesScreen({ navigation, route }) {
   }
 
   function editSharedExpense() {
-    console.log("ID: " + editEid);
-    console.log("Expense: " + expense);
-    console.log("Cost: " + cost);
-    sharedExpensesContext.editSharedExpense(editEid, expense, cost);
-    console.log("Shared Expenses: ", sharedExpensesContext.sharedExpenses);
-    navigation.navigate("SharedExpenses");
+    if (editEid.length <= 0 || isNaN(editEid) || editEid === null) {
+      console.log("Edit Eid empty: " + editEid);
+      Alert.alert(
+        "Edit EID not found",
+        "Edit Expense ID is empty please go back to the main screen and start again.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("Main"),
+          },
+        ]
+      );
+    } else if (expense.length <= 0) {
+      console.log("Expense name empty: " + expense);
+      Alert.alert(
+        "Expense name empty",
+        "Expense name is empty please fill up the expense name.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            onPress: () => console.log("Ok pressed"),
+          },
+        ]
+      );
+    } else {
+      console.log("ID: " + editEid);
+      console.log("Expense: " + expense);
+      console.log("Cost: " + cost);
+      sharedExpensesContext.editSharedExpense(editEid, expense, +cost);
+      console.log("Shared Expenses: ", sharedExpensesContext.sharedExpenses);
+      navigation.navigate("SharedExpenses");
+    }
   }
   return (
     <View style={styles.container}>
@@ -60,7 +97,7 @@ function EditSharedExpensesScreen({ navigation, route }) {
       <View style={styles.buttonContainer}>
         <Pressable onPress={editSharedExpense}>
           <InputButton>
-            <AntDesign name="edit" size={50} color="#433E0E" />
+            <AntDesign name="edit" size={50} color={Colors.fontColorDark} />
           </InputButton>
         </Pressable>
       </View>
@@ -73,7 +110,6 @@ export default EditSharedExpensesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: "10%",
     alignContent: "center",
     alignItems: "center",
   },
@@ -83,7 +119,8 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   buttonContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
+    justifyContent: "flex-end",
   },
 });

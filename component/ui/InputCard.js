@@ -1,4 +1,5 @@
-import { Text, StyleSheet, View, TextInput, Dimensions } from 'react-native'
+import { Text, StyleSheet, View, TextInput, Dimensions } from 'react-native';
+import Colors from '../../constants/colors';
 
 function InputCard({placeholder, handler, keyboardType}) {
     return (
@@ -20,10 +21,10 @@ const deviceWidth = Dimensions.get("screen").width;
 const styles = StyleSheet.create({
   input: {
     textAlign: "center",
-    backgroundColor: "#D0C88E",
+    backgroundColor: Colors.boxColor,
     borderWidth: 2,
-    borderColor: "#A7A284",
-    color: "#433E0E",
+    borderColor: Colors.boxBorderColor,
+    color: Colors.fontColorDark,
     fontSize: 20,
     margin: "2%",
     padding: "5%",
