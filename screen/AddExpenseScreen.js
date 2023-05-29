@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, Pressable, Alert } from "react-native";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BillsContext } from "../context/bill-context";
 import InputCard from "../component/ui/InputCard";
 import InputButton from "../component/ui/InputButton";
@@ -13,15 +13,30 @@ function AddExpenseScreen({ navigation, route }) {
   const expenses = expensesContext.expenses;
   const uid = route.params.userID;
   const name = route.params.userName;
+  let eidCheck = [];
+  let eid = 0;
 
-  const eid = Math.trunc(
-    expenses.length +
-      (Math.floor(Math.random() * 100) +
-        1 +
-        (Math.floor(Math.random() * 100) + 1) *
-          (Math.floor(Math.random() * 100) + 1)) /
-        (Math.floor(Math.random() * 100) + 1)
-  );
+  //Check if EID repeats
+  if (eid === eidCheck.slice(-1)) {
+    eid = eidCheck.slice(-1) + 1;
+  } else {
+    eid = Math.trunc(
+      expenses.length +
+        (Math.floor(Math.random() * 100) +
+          1 +
+          (Math.floor(Math.random() * 100) + 1) *
+            (Math.floor(Math.random() * 100) + 1)) /
+          (Math.floor(Math.random() * 100) + 1)
+    );
+  }
+
+  useEffect(() => {
+    eidCheck = expenses.map((expense) => {
+      if (expense.eid === eid) {
+        return expense.eid;
+      }
+    });
+  }, []);
 
   function expenseNameInputHandler(enteredExpenseName) {
     console.log("Expense name: " + enteredExpenseName);
@@ -137,6 +152,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 2,
     alignItems: "center",
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
 });

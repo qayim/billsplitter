@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -19,15 +19,29 @@ function AddUserScreen({ navigation }) {
   const [name, setName] = useState("");
   const usersContext = useContext(BillsContext);
   const users = usersContext.users;
+  let uidCheck = [];
+  let uid = 0;
 
-  const uid = Math.trunc(
-    users.length +
-      (Math.floor(Math.random() * 100) +
-        1 +
-        (Math.floor(Math.random() * 100) + 1) *
-          (Math.floor(Math.random() * 100) + 1)) /
-        (Math.floor(Math.random() * 100) + 1)
-  );
+  if (uid === uidCheck.slice(-1)) {
+    uid = uidCheck.slice(-1) + 1;
+  } else {
+    uid = Math.trunc(
+      users.length +
+        (Math.floor(Math.random() * 100) +
+          1 +
+          (Math.floor(Math.random() * 100) + 1) *
+            (Math.floor(Math.random() * 100) + 1)) /
+          (Math.floor(Math.random() * 100) + 1)
+    );
+  }
+
+  useEffect(() => {
+    uidCheck = users.map((user) => {
+      if (users.uid === uid) {
+        return user.uid;
+      }
+    });
+  }, []);
 
   function nameInputHandler(enteredName) {
     console.log("Name: " + enteredName);

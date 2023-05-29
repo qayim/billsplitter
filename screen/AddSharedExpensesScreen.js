@@ -11,15 +11,30 @@ function AddSharedExpenseScreen({ navigation, route }) {
   const [cost, setCost] = useState(0);
   const sharedExpensesContext = useContext(BillsContext);
   const sharedExpenses = sharedExpensesContext.sharedExpenses;
+  let eidCheck = [];
+  let eid = 0;
 
-  const eid = Math.trunc(
-    sharedExpenses.length +
-      (Math.floor(Math.random() * 100) +
-        1 +
-        (Math.floor(Math.random() * 100) + 1) *
-          (Math.floor(Math.random() * 100) + 1)) /
-        (Math.floor(Math.random() * 100) + 1)
-  );
+  //Checks if EID same
+  if (eid === eidCheck.slice(-1)) {
+    eid = eidCheck.slice(-1) + 1;
+  } else {
+    eid = Math.trunc(
+      expenses.length +
+        (Math.floor(Math.random() * 100) +
+          1 +
+          (Math.floor(Math.random() * 100) + 1) *
+            (Math.floor(Math.random() * 100) + 1)) /
+          (Math.floor(Math.random() * 100) + 1)
+    );
+  }
+
+  useEffect(() => {
+    eidCheck = expenses.map((expense) => {
+      if (expense.eid === eid) {
+        return expense.eid;
+      }
+    });
+  }, []);
 
   function expenseNameInputHandler(enteredExpenseName) {
     console.log("Expense name: " + enteredExpenseName);
@@ -66,7 +81,8 @@ function AddSharedExpenseScreen({ navigation, route }) {
           },
         ]
       );
-    } sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
+    } else {
+      sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
       console.log("EID: " + eid);
       console.log("Expense name: " + expenseName);
       console.log("Cost: " + cost);
