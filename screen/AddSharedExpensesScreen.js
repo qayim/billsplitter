@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, View, Pressable } from "react-native";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BillsContext } from "../context/bill-context";
 import InputCard from "../component/ui/InputCard";
 import InputButton from "../component/ui/InputButton";
@@ -14,12 +14,12 @@ function AddSharedExpenseScreen({ navigation, route }) {
   let eidCheck = [];
   let eid = 0;
 
-  //Checks if EID same
+  //Check if EID repeats
   if (eid === eidCheck.slice(-1)) {
     eid = eidCheck.slice(-1) + 1;
   } else {
     eid = Math.trunc(
-      expenses.length +
+      sharedExpenses.length +
         (Math.floor(Math.random() * 100) +
           1 +
           (Math.floor(Math.random() * 100) + 1) *
@@ -29,9 +29,9 @@ function AddSharedExpenseScreen({ navigation, route }) {
   }
 
   useEffect(() => {
-    eidCheck = expenses.map((expense) => {
-      if (expense.eid === eid) {
-        return expense.eid;
+    eidCheck = sharedExpenses.map((sharedExpense) => {
+      if (sharedExpense.eid === eid) {
+        return sharedExpense.eid;
       }
     });
   }, []);
