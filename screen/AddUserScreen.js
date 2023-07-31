@@ -21,19 +21,17 @@ function AddUserScreen({ navigation }) {
   const users = usersContext.users;
   let uidCheck = [];
   let uid = 0;
+  let time = new Date().getTime();
 
-  if (uid === uidCheck.slice(-1)) {
-    uid = uidCheck.slice(-1) + 1;
-  } else {
-    uid = Math.trunc(
-      users.length +
-        (Math.floor(Math.random() * 100) +
-          1 +
-          (Math.floor(Math.random() * 100) + 1) *
-            (Math.floor(Math.random() * 100) + 1)) /
-          (Math.floor(Math.random() * 100) + 1)
-    );
-  }
+  uid = Math.trunc(
+    users.length +
+      time +
+      (Math.floor(Math.random() * 100) +
+        1 +
+        (Math.floor(Math.random() * 100) + 1) *
+          (Math.floor(Math.random() * 100) + 1)) /
+        (Math.floor(Math.random() * 100) + 1)
+  );
 
   useEffect(() => {
     uidCheck = users.map((user) => {
@@ -102,7 +100,11 @@ function AddUserScreen({ navigation }) {
         <View style={styles.buttonContainer}>
           <Pressable onPress={addUser}>
             <InputButton>
-              <Ionicons name="add-circle-outline" size={50} color={Colors.fontColorDark} />
+              <Ionicons
+                name="add-circle-outline"
+                size={50}
+                color={Colors.fontColorDark}
+              />
             </InputButton>
           </Pressable>
         </View>

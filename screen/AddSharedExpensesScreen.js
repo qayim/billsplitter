@@ -13,20 +13,17 @@ function AddSharedExpenseScreen({ navigation, route }) {
   const sharedExpenses = sharedExpensesContext.sharedExpenses;
   let eidCheck = [];
   let eid = 0;
+  let time = new Date().getTime();
 
-  //Check if EID repeats
-  if (eid === eidCheck.slice(-1)) {
-    eid = eidCheck.slice(-1) + 1;
-  } else {
-    eid = Math.trunc(
-      sharedExpenses.length +
-        (Math.floor(Math.random() * 100) +
-          1 +
-          (Math.floor(Math.random() * 100) + 1) *
-            (Math.floor(Math.random() * 100) + 1)) /
-          (Math.floor(Math.random() * 100) + 1)
-    );
-  }
+  eid = Math.trunc(
+    sharedExpenses.length +
+      time +
+      (Math.floor(Math.random() * 100) +
+        1 +
+        (Math.floor(Math.random() * 100) + 1) *
+          (Math.floor(Math.random() * 100) + 1)) /
+        (Math.floor(Math.random() * 100) + 1)
+  );
 
   useEffect(() => {
     eidCheck = sharedExpenses.map((sharedExpense) => {
