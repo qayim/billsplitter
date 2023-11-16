@@ -12,9 +12,9 @@ export const BillsContext = createContext({
   addExpense: (uid, eid, expenseName, cost) => {},
   deleteExpense: (eid) => {},
   editExpense: (eid, newExpenseName, newCost) => {},
-  addSharedExpenses: (eid, expenseName, cost) => {},
+  addSharedExpenses: (eid, expenseName, cost, percentage) => {},
   deleteSharedExpense: (eid) => {},
-  editSharedExpense: (eid, newExpenseName, newCost) => {},
+  editSharedExpense: (eid, newExpenseName, newCost, newPercentage) => {},
   reset: () => {},
 });
 
@@ -90,10 +90,10 @@ function BillContextProvider({ children }) {
       setExpenses(newExpense);
     }
 
-    function addSharedExpense(eid, expenseName, cost) {
+    function addSharedExpense(eid, expenseName, cost, percentage) {
       setSharedExpenses((currentSharedExpense) => [
         ...currentSharedExpense,
-        { eid: eid, expenseName: expenseName, cost: cost },
+        { eid: eid, expenseName: expenseName, cost: cost, percentage: percentage },
       ]);
     }
     function deleteSharedExpense(eid) {
@@ -103,13 +103,14 @@ function BillContextProvider({ children }) {
       console.log("Delete shared expense context id:" + eid);
     }
 
-    function editSharedExpense(eid, newExpenseName, newCost) {
+    function editSharedExpense(eid, newExpenseName, newCost, newPercentage) {
       const newSharedExpense = sharedExpenses.map((sharedExpense) => {
         if (sharedExpense.eid === eid) {
           return {
             ...sharedExpense,
             expenseName: newExpenseName,
             cost: newCost,
+            percentage: newPercentage
           };
         }
         return sharedExpense;

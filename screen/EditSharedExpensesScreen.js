@@ -20,10 +20,15 @@ function EditSharedExpensesScreen({ navigation, route }) {
   const costEdit = sharedExpenseObjectEdit.find(
     (item) => item.eid === editEid
   ).cost;
+  const percentageEdit = sharedExpenseObjectEdit.find(
+    (item) => item.eid === editEid
+  ).percentage;
   console.log("editEid: " + editEid);
   console.log("sharedExpenseNameEdit: ", sharedExpenseNameEdit);
+  console.log("percentageEdit: ", percentageEdit);
   const [expense, setExpense] = useState(sharedExpenseNameEdit);
   const [cost, setCost] = useState(costEdit);
+  const [percentage, setPercentage] = useState(percentageEdit);
 
   function expenseEditInputHandler(enteredExpense) {
     console.log("Expense: " + enteredExpense);
@@ -31,8 +36,13 @@ function EditSharedExpensesScreen({ navigation, route }) {
   }
 
   function costEditInputHandler(enteredCost) {
-    console.log("Cost: " + enteredCost);
-    setCost(enteredCost);
+    if (costEdit === 0 || percentageEdit != 0) {
+      console.log("Percentage: " + enteredCost);
+      setPercentage(enteredCost);
+    } else {
+      console.log("Cost: " + enteredCost);
+      setCost(enteredCost);
+    }
   }
 
   function editSharedExpense() {
@@ -74,7 +84,8 @@ function EditSharedExpensesScreen({ navigation, route }) {
       console.log("ID: " + editEid);
       console.log("Expense: " + expense);
       console.log("Cost: " + cost);
-      sharedExpensesContext.editSharedExpense(editEid, expense, +cost);
+      console.log("Percentage: " + percentage);
+      sharedExpensesContext.editSharedExpense(editEid, expense, +cost, +percentage);
       console.log("Shared Expenses: ", sharedExpensesContext.sharedExpenses);
       navigation.navigate("SharedExpenses");
     }
@@ -89,7 +100,7 @@ function EditSharedExpensesScreen({ navigation, route }) {
           keyboardType="default"
         />
         <InputCard
-          placeholder={costEdit + " "}
+          placeholder={costEdit === 0 || percentageEdit != 0 ? percentageEdit + " ": costEdit + " "}
           handler={costEditInputHandler}
           keyboardType="numeric"
         />

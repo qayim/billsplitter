@@ -2,7 +2,7 @@ import { Text, StyleSheet, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../constants/colors";
 
-function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
+function ExpensesCard({ expenseName, cost, percentage, eid, onDelete, onLongPress }) {
   let expenseFontSize = 18;
   if (cost > 99 && cost < 1000) {
     expenseFontSize = 18;
@@ -21,9 +21,15 @@ function ExpensesCard({ expenseName, cost, eid, onDelete, onLongPress }) {
             <Text style={styles.expenseText}> {expenseName} </Text>
           </View>
           <View style={styles.costContainer}>
-            <Text style={[styles.costText, { fontSize: expenseFontSize }]}>
-              RM{cost}
-            </Text>
+            {cost === 0 || percentage != 0 ? (
+              <Text style={[styles.costText, { fontSize: expenseFontSize }]}>
+                {percentage}%
+              </Text>
+            ) : (
+              <Text style={[styles.costText, { fontSize: expenseFontSize }]}>
+                RM{cost}
+              </Text>
+            )}
           </View>
           <View style={styles.iconContainer}>
             <Pressable onPress={onDelete.bind(this, eid)}>
@@ -84,4 +90,3 @@ const styles = StyleSheet.create({
   },
 });
 
-//colors #EDEEC0 #433E0E #7C9082 #A7A284 #D0C88E

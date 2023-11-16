@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Colors from '../../constants/colors';
 
-function SharedExpensesCard({sharedExpensesTotal}) {
+function SharedExpensesCard({sharedExpensesTotal, sharedPercentageTotal}) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.totalText}> Shared expenses: RM{sharedExpensesTotal.toFixed(2)}</Text>
-      </View>
+      <>
+        <View style={styles.container}>
+          <Text style={styles.totalText}>
+            {" "}
+            Shared expenses: RM{sharedExpensesTotal.toFixed(2)}
+          </Text>
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.totalText}>
+            {" "}
+            Percentage: {sharedPercentageTotal*100}%
+          </Text>
+        </View>
+      </>
     );
 }
 
@@ -28,4 +39,3 @@ const styles = StyleSheet.create({
   },
 });
 
-//colors #EDEEC0 #433E0E #7C9082 #A7A284 #D0C88E

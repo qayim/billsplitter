@@ -21,25 +21,26 @@ function AddUserScreen({ navigation }) {
   const users = usersContext.users;
   let uidCheck = [];
   let uid = 0;
-  let time = new Date().getTime();
+  let time = new Date();
 
-  uid = Math.trunc(
-    users.length +
-      time +
-      (Math.floor(Math.random() * 100) +
-        1 +
-        (Math.floor(Math.random() * 100) + 1) *
-          (Math.floor(Math.random() * 100) + 1)) /
-        (Math.floor(Math.random() * 100) + 1)
-  );
+  // uid = Math.trunc(
+  //   users.length +
+  //     time +
+  //     (Math.floor(Math.random() * 100) +
+  //       1 +
+  //       (Math.floor(Math.random() * 100) + 1) *
+  //         (Math.floor(Math.random() * 100) + 1)) /
+  //       (Math.floor(Math.random() * 100) + 1)
+  // );
+  uid = users.length + Math.floor(Math.random() * 100);
 
-  useEffect(() => {
-    uidCheck = users.map((user) => {
-      if (users.uid === uid) {
-        return user.uid;
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   uidCheck = users.map((user) => {
+  //     if (users.uid === uid) {
+  //       return user.uid;
+  //     }
+  //   });
+  // }, []);
 
   function nameInputHandler(enteredName) {
     console.log("Name: " + enteredName);
@@ -48,7 +49,7 @@ function AddUserScreen({ navigation }) {
 
   function addUser() {
     if (uid.length <= 0 || isNaN(uid) || uid === null) {
-      console.log("UID Empty: " + uid);
+      console.log("UID Empty: " + uid + " uid.length: " + uid.length + " isNan(uid): " + isNaN(uid));
       Alert.alert(
         "UID not found",
         "User ID is empty please go back to the main screen and start again.",
@@ -133,4 +134,3 @@ const styles = StyleSheet.create({
   },
 });
 
-//colors #EDEEC0 #433E0E #7C9082 #A7A284 #D0C88E

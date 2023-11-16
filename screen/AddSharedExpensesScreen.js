@@ -1,29 +1,25 @@
-import { Alert, StyleSheet, View, Pressable } from "react-native";
+import { Alert, StyleSheet, View, Pressable, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import { BillsContext } from "../context/bill-context";
 import InputCard from "../component/ui/InputCard";
 import InputButton from "../component/ui/InputButton";
 import { Ionicons } from "@expo/vector-icons";
 import TitleCard from "../component/ui/TitleCard";
+import OverallTotalCard from "../component/ui/OverallTotalCard";
+import ExpensesCardDummy from "../component/ui/ExpensesCardDummy";
 
 function AddSharedExpenseScreen({ navigation, route }) {
   const [expenseName, setExpenseName] = useState("");
   const [cost, setCost] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+  const [percentageOption, setPercentageOption] = useState(false);
   const sharedExpensesContext = useContext(BillsContext);
   const sharedExpenses = sharedExpensesContext.sharedExpenses;
   let eidCheck = [];
   let eid = 0;
-  let time = new Date().getTime();
+  let time = new Date();
 
-  eid = Math.trunc(
-    sharedExpenses.length +
-      time +
-      (Math.floor(Math.random() * 100) +
-        1 +
-        (Math.floor(Math.random() * 100) + 1) *
-          (Math.floor(Math.random() * 100) + 1)) /
-        (Math.floor(Math.random() * 100) + 1)
-  );
+  eid = sharedExpenses.length + Math.floor(Math.random() * 100);
 
   useEffect(() => {
     eidCheck = sharedExpenses.map((sharedExpense) => {
@@ -35,12 +31,32 @@ function AddSharedExpenseScreen({ navigation, route }) {
 
   function expenseNameInputHandler(enteredExpenseName) {
     console.log("Expense name: " + enteredExpenseName);
-    setExpenseName(enteredExpenseName);
+    let lowerCaseExpenseName = enteredExpenseName.toLowerCase();
+    if (
+      lowerCaseExpenseName.includes("tax") ||
+      lowerCaseExpenseName.includes("charge") ||
+      lowerCaseExpenseName.includes("%") ||
+      lowerCaseExpenseName.includes("percentage") ||
+      lowerCaseExpenseName.includes("percent")
+    ) {
+      setPercentageOption(true);
+      setExpenseName(enteredExpenseName);
+      console.log("have tax " + percentageOption);
+    } else {
+      setPercentageOption(false);
+      setExpenseName(enteredExpenseName);
+      console.log("no tax " + percentageOption);
+    }
   }
 
   function costInputHandler(enteredCost) {
     console.log("Cost: " + enteredCost);
     setCost(enteredCost);
+  }
+
+  function percentageInputHandler(enteredPercentage) {
+    console.log("Percentage: " + enteredPercentage);
+    setPercentage(enteredPercentage);
   }
 
   function addSharedExpense() {
@@ -79,10 +95,11 @@ function AddSharedExpenseScreen({ navigation, route }) {
         ]
       );
     } else {
-      sharedExpensesContext.addSharedExpense(eid, expenseName, +cost);
+      sharedExpensesContext.addSharedExpense(eid, expenseName, +cost, +percentage);
       console.log("EID: " + eid);
       console.log("Expense name: " + expenseName);
       console.log("Cost: " + cost);
+      console.log("Percentage: " + percentage);
       console.log("Shared Expenses: ", sharedExpenses);
       navigation.navigate("SharedExpenses");
     }
@@ -98,11 +115,16 @@ function AddSharedExpenseScreen({ navigation, route }) {
           keyboardType="default"
         />
         <InputCard
-          placeholder="Cost"
-          handler={costInputHandler}
+          placeholder={percentageOption ? "%" : "Cost"}
+          handler={percentageOption ? percentageInputHandler : costInputHandler}
           keyboardType="number-pad"
         />
       </View>
+      {!percentageOption && 
+        <View>
+          <Text>You can make it into percentage by adding "%" to the shared expense name</Text>
+        </View>
+      }
       <View style={styles.buttonContainer}>
         <Pressable onPress={addSharedExpense}>
           <InputButton>

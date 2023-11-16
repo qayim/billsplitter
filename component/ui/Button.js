@@ -19,5 +19,3 @@ const styles = StyleSheet.create({
     height: deviceHeight * 0.2,
   },
 });
-
-//colors #EDEEC0 #433E0E #7C9082 #A7A284 #D0C88E

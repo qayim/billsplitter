@@ -84,4 +84,3 @@ const styles = StyleSheet.create({
   },
 });
 
-//colors #EDEEC0 #433E0E #7C9082 #A7A284 #D0C88E

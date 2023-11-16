@@ -16,17 +16,43 @@ import SharedExpensesCard from "../component/ui/SharedExpensesCard";
 function MainScreen({ navigation }) {
   const [totalCost, setTotalCost] = useState(0);
   const [totalSharedExpense, setTotalSharedExpense] = useState(0);
+  const [percentageTotal, setPercentageTotal] = useState(0);
   const userContext = useContext(BillsContext);
   const users = userContext.users;
   const usersExpenses = userContext.expenses;
   const sharedExpenses = userContext.sharedExpenses;
+  let percentage = [];
 
   useEffect(() => {
-    setTotalCost(usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0)+totalSharedExpense);
+    setTotalCost(
+      usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
+        totalSharedExpense
+    );
     console.log("Total cost: " + +totalCost);
     setTotalSharedExpense(
       sharedExpenses.reduce((acc, cur) => acc + +cur.cost, 0)
     );
+    console.log(
+      "sharedExpenses map: ",
+      sharedExpenses.map((sharedExpense) => {
+        return sharedExpense.percentage;
+      })
+    );
+    percentage = sharedExpenses.map((sharedExpense) => {
+      return sharedExpense.percentage;
+    });
+    console.log("percentage: " + percentage);
+   console.log(
+     "percentage array total: " +
+       percentage.reduce((acc, curr) => {
+         return acc + curr;
+       }, 0) /
+         100
+   );
+   setPercentageTotal(percentage.reduce((acc, curr) => {
+         return acc + curr;
+       }, 0) /
+         100)
   }, [addUser, onSharedExpenses]);
 
   function addUser() {
@@ -42,7 +68,18 @@ function MainScreen({ navigation }) {
       console.log("User expenses is empty: ", userExpenses);
       return userTotalExpense;
     } else {
-      userTotalExpense = userExpenses.reduce((acc, cur) => acc + +cur.cost, 0);
+      console.log("userExpenses: ", userExpenses);
+      userTotalExpense = userExpenses.reduce((acc, cur) => {
+        console.log(
+          "acc: " +
+            acc +
+            " cur.cost: " +
+            cur.cost +
+            " users.length: " +
+            users.length
+        );
+        return acc + +cur.cost;
+      }, 0);
       console.log("UID: " + uid + "; Total Expense: " + userTotalExpense);
       return userTotalExpense;
     }
@@ -88,7 +125,7 @@ function MainScreen({ navigation }) {
 
   function resetAll() {
     userContext.reset();
-    if(users.length<=0){
+    if (users.length <= 0) {
       navigation.navigate("Main");
     }
   }
@@ -99,17 +136,22 @@ function MainScreen({ navigation }) {
     }
   }, [resetAll]);
 
-  function infoHandler(){
+  function infoHandler() {
     navigation.navigate("Info");
   }
-  
 
   return (
     <View style={styles.container}>
-      <TitleCardIcon title={"FairSplit"} icon={"adduser"} page={addUser} info={infoHandler} onLongPress={resetAll}/>
+      <TitleCardIcon
+        title={"FairSplit"}
+        icon={"adduser"}
+        page={addUser}
+        info={infoHandler}
+        onLongPress={resetAll}
+      />
       <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
       <Pressable onPress={onSharedExpenses}>
-        <SharedExpensesCard sharedExpensesTotal={totalSharedExpense} />
+        <SharedExpensesCard sharedExpensesTotal={totalSharedExpense} sharedPercentageTotal={percentageTotal}/>
       </Pressable>
       <FlatList
         data={users}
@@ -118,9 +160,13 @@ function MainScreen({ navigation }) {
             <UserCard
               id={itemData.item.uid}
               name={itemData.item.name}
-              total={
-                (userTotal(itemData.item.uid) + totalSharedExpense / users.length).toFixed(2)
-              }
+              total={(
+                (userTotal(itemData.item.uid) +
+                  totalSharedExpense / users.length) *
+                  percentageTotal +
+                userTotal(itemData.item.uid) +
+                totalSharedExpense / users.length
+              ).toFixed(2)}
               check={itemData.item.check}
               onDelete={onDeleteUserHandler}
               onCheck={onCheckUserHandler}
