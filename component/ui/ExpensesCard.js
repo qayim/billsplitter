@@ -21,7 +21,7 @@ function ExpensesCard({ expenseName, cost, percentage, eid, onDelete, onLongPres
             <Text style={styles.expenseText}> {expenseName} </Text>
           </View>
           <View style={styles.costContainer}>
-            {cost === 0 || percentage != 0 ? (
+            {cost === 0 || percentage !=0 ? (
               <Text style={[styles.costText, { fontSize: expenseFontSize }]}>
                 {percentage}%
               </Text>

@@ -100,6 +100,7 @@ function UserExpensesScreen({ navigation, route }) {
             <ExpensesCard
               expenseName={itemData.item.expenseName}
               cost={itemData.item.cost.toFixed(2)}
+              percentage={0}
               eid={itemData.item.eid}
               onDelete={onDeleteExpenseHandler}
               onLongPress={onEditExpenseHandler}
