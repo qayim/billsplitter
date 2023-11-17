@@ -25,9 +25,9 @@ function MainScreen({ navigation }) {
 
   useEffect(() => {
     setTotalCost(
-      ((usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
+      (usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
         totalSharedExpense) *
-        (percentageTotal)) +
+        percentageTotal +
         usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
         totalSharedExpense
     );
@@ -135,6 +135,18 @@ function MainScreen({ navigation }) {
     }
   }
 
+  function onOverallTotal() {
+    console.log("Overall Total page");
+    navigation.navigate("OverallTotal", {
+      total: totalCost,
+      sharedExpenses: totalSharedExpense,
+      percentage: percentageTotal,
+      totalExclPercentage:
+        usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
+        totalSharedExpense,
+    });
+  }
+
   useEffect(() => {
     if (users.length <= 0) {
       navigation.navigate("Main");
@@ -154,7 +166,10 @@ function MainScreen({ navigation }) {
         info={infoHandler}
         onLongPress={resetAll}
       />
-      <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
+      <Pressable onPress={onOverallTotal}>
+        <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
+      </Pressable>
+
       <Pressable onPress={onSharedExpenses}>
         <SharedExpensesCard
           sharedExpensesTotal={totalSharedExpense}

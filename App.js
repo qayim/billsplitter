@@ -12,6 +12,7 @@ import SharedExpensesScreen from "./screen/SharedExpensesScreen";
 import AddSharedExpenseScreen from "./screen/AddSharedExpensesScreen";
 import EditSharedExpensesScreen from "./screen/EditSharedExpensesScreen";
 import InfoScreen from "./screen/InfoScreen";
+import OverallTotalScreen from "./screen/OverallTotalScreen";
 import Colors from "./constants/colors";
 
 const Stack = createNativeStackNavigator();
@@ -20,7 +21,10 @@ export default function App() {
   return (
     <BillContextProvider>
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar backgroundColor={Colors.backgroundColor} barStyle="dark-content" />
+        <StatusBar
+          backgroundColor={Colors.backgroundColor}
+          barStyle="dark-content"
+        />
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -77,6 +81,11 @@ export default function App() {
               name="Info"
               component={InfoScreen}
               options={{ title: "Application Information Center" }}
+            />
+            <Stack.Screen
+              name="OverallTotal"
+              component={OverallTotalScreen}
+              options={{ title: "Overall Total Screen" }}
             />
           </Stack.Navigator>
         </NavigationContainer>
