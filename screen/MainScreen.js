@@ -25,10 +25,14 @@ function MainScreen({ navigation }) {
 
   useEffect(() => {
     setTotalCost(
-      usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
+      ((usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
+        totalSharedExpense) *
+        (percentageTotal)) +
+        usersExpenses.reduce((acc, cur) => acc + +cur.cost, 0) +
         totalSharedExpense
     );
     console.log("Total cost: " + +totalCost);
+    console.log("percentageTotal: " + +percentageTotal);
     setTotalSharedExpense(
       sharedExpenses.reduce((acc, cur) => acc + +cur.cost, 0)
     );
@@ -42,17 +46,18 @@ function MainScreen({ navigation }) {
       return sharedExpense.percentage;
     });
     console.log("percentage: " + percentage);
-   console.log(
-     "percentage array total: " +
-       percentage.reduce((acc, curr) => {
-         return acc + curr;
-       }, 0) /
-         100
-   );
-   setPercentageTotal(percentage.reduce((acc, curr) => {
-         return acc + curr;
-       }, 0) /
-         100)
+    console.log(
+      "percentage array total: " +
+        percentage.reduce((acc, curr) => {
+          return acc + curr;
+        }, 0) /
+          100
+    );
+    setPercentageTotal(
+      percentage.reduce((acc, curr) => {
+        return acc + curr;
+      }, 0) / 100
+    );
   }, [addUser, onSharedExpenses]);
 
   function addUser() {
@@ -151,7 +156,10 @@ function MainScreen({ navigation }) {
       />
       <OverallTotalCard overallTotal={totalCost.toFixed(2)} />
       <Pressable onPress={onSharedExpenses}>
-        <SharedExpensesCard sharedExpensesTotal={totalSharedExpense} sharedPercentageTotal={percentageTotal}/>
+        <SharedExpensesCard
+          sharedExpensesTotal={totalSharedExpense}
+          sharedPercentageTotal={percentageTotal}
+        />
       </Pressable>
       <FlatList
         data={users}

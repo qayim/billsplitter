@@ -7,6 +7,8 @@ import { Ionicons } from "@expo/vector-icons";
 import TitleCard from "../component/ui/TitleCard";
 import OverallTotalCard from "../component/ui/OverallTotalCard";
 import ExpensesCardDummy from "../component/ui/ExpensesCardDummy";
+import Button from "../component/ui/Button";
+import MediumButton from "../component/ui/MediumButton";
 
 function AddSharedExpenseScreen({ navigation, route }) {
   const [expenseName, setExpenseName] = useState("");
@@ -33,11 +35,7 @@ function AddSharedExpenseScreen({ navigation, route }) {
     console.log("Expense name: " + enteredExpenseName);
     let lowerCaseExpenseName = enteredExpenseName.toLowerCase();
     if (
-      lowerCaseExpenseName.includes("tax") ||
-      lowerCaseExpenseName.includes("charge") ||
-      lowerCaseExpenseName.includes("%") ||
-      lowerCaseExpenseName.includes("percentage") ||
-      lowerCaseExpenseName.includes("percent")
+      percentageOption
     ) {
       setPercentageOption(true);
       setExpenseName(enteredExpenseName);
@@ -57,6 +55,11 @@ function AddSharedExpenseScreen({ navigation, route }) {
   function percentageInputHandler(enteredPercentage) {
     console.log("Percentage: " + enteredPercentage);
     setPercentage(enteredPercentage);
+  }
+
+  function percentageButtonHandler(){
+    console.log("percentageOption percentage: " + percentageOption);
+    setPercentageOption(!percentageOption);
   }
 
   function addSharedExpense() {
@@ -120,12 +123,13 @@ function AddSharedExpenseScreen({ navigation, route }) {
           keyboardType="number-pad"
         />
       </View>
-      {!percentageOption && 
-        <View>
-          <Text>You can make it into percentage by adding "%" to the shared expense name</Text>
-        </View>
-      }
+
       <View style={styles.buttonContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <Pressable onPress={percentageButtonHandler}>
+            <MediumButton active={percentageOption}>%</MediumButton>
+          </Pressable>
+        </View>
         <Pressable onPress={addSharedExpense}>
           <InputButton>
             <Ionicons name="add-circle-outline" size={50} color="#433E0E" />
